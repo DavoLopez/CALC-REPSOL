@@ -1,0 +1,285 @@
+```html
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asesoría Comercial Repsol & Calculadora Comparativa</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+        
+        body {
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: #0f172a;
+            color: #f8fafc;
+        }
+
+        /* Apple Gel & Glassmorphism Aesthetics */
+        .glass-card {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+        }
+
+        .apple-btn-orange {
+            background: linear-gradient(135deg, #ff7e00 0%, #e65c00 100%);
+            box-shadow: 0 4px 15px rgba(255, 126, 0, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.4);
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .apple-btn-orange:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 126, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.6);
+        }
+
+        .apple-btn-blue {
+            background: linear-gradient(135deg, #007aff 0%, #0056b3 100%);
+            box-shadow: 0 4px 15px rgba(0, 122, 255, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.4);
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .apple-btn-blue:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 122, 255, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.6);
+        }
+
+        .tab-btn {
+            transition: all 0.3s ease;
+        }
+        .tab-btn.active {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.3);
+            box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.2);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #475569;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-orange-500 selection:text-white">
+
+    <header class="sticky top-0 z-50 glass-card border-b border-slate-800/80 px-4 lg:px-8 py-4 mb-6">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-2xl apple-btn-orange flex items-center justify-center text-white font-extrabold text-xl shadow-lg">
+                    R
+                </div>
+                <div>
+                    <h1 class="text-xl font-bold tracking-tight text-white flex items-center gap-2">
+                        REPSOL <span class="text-xs bg-orange-500/20 text-orange-400 border border-orange-500/30 px-2 py-0.5 rounded-full font-semibold">Asesoría Comercial</span>
+                    </h1>
+                    <p class="text-xs text-slate-400">Herramienta Interactiva de Cotización & Guía de Capacitación</p>
+                </div>
+            </div>
+
+            <!-- Navigation Tabs -->
+            <nav class="flex flex-wrap items-center justify-center gap-1.5 bg-slate-900/80 p-1.5 rounded-2xl border border-slate-800">
+                <button onclick="switchTab('calc')" id="tab-calc" class="tab-btn active px-4 py-2 rounded-xl text-xs sm:text-sm font-medium text-slate-200 flex items-center gap-2">
+                    <i data-lucide="calculator" class="w-4 h-4 text-orange-400"></i> Calculadora
+                </button>
+                <button onclick="switchTab('tarifas')" id="tab-tarifas" class="tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-medium text-slate-400 hover:text-white flex items-center gap-2">
+                    <i data-lucide="zap" class="w-4 h-4 text-amber-400"></i> Tarifas
+                </button>
+                <button onclick="switchTab('waylet')" id="tab-waylet" class="tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-medium text-slate-400 hover:text-white flex items-center gap-2">
+                    <i data-lucide="smartphone" class="w-4 h-4 text-emerald-400"></i> Waylet
+                </button>
+                <button onclick="switchTab('asistencias')" id="tab-asistencias" class="tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-medium text-slate-400 hover:text-white flex items-center gap-2">
+                    <i data-lucide="gift" class="w-4 h-4 text-purple-400"></i> Asistencias & Regalos
+                </button>
+                <button onclick="switchTab('requisitos')" id="tab-requisitos" class="tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-medium text-slate-400 hover:text-white flex items-center gap-2">
+                    <i data-lucide="file-check" class="w-4 h-4 text-cyan-400"></i> Requisitos
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 lg:px-8 w-full flex-grow mb-10">
+
+        <!-- ================= SECCIÓN 1: CALCULADORA COMPARATIVA ================= -->
+        <section id="sec-calc" class="space-y-6">
+            <div class="glass-card rounded-3xl p-6 lg:p-8">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8 border-b border-slate-800 pb-5">
+                    <div>
+                        <h2 class="text-2xl font-bold text-white flex items-center gap-2">
+                            <i data-lucide="scale" class="text-orange-400"></i> Comparador de Factura Actual vs. Repsol
+                        </h2>
+                        <p class="text-sm text-slate-400 mt-1">Ingresa los datos de la factura del cliente para realizar el cálculo con nuestras tarifas vigentes (0,18 €/kW/día y 0,134 €/kWh).</p>
+                    </div>
+                    <span class="bg-slate-800 border border-slate-700 text-slate-300 text-xs px-3 py-1.5 rounded-full flex items-center gap-1.5 font-mono">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Tarifa Access 2.0TD (&lt;10kW)
+                    </span>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                    <!-- Formulario de entrada de datos -->
+                    <div class="lg:col-span-6 space-y-5 bg-slate-900/60 p-6 rounded-2xl border border-slate-800/80">
+                        <h3 class="text-base font-semibold text-slate-200 border-b border-slate-800 pb-2 flex items-center justify-between">
+                            <span>Datos Extraídos de la Factura</span>
+                            <i data-lucide="file-text" class="w-4 h-4 text-slate-400"></i>
+                        </h3>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <!-- POTENCIA CON MODO SIMPLE / TRAMOS (P1/P2) -->
+                            <div class="space-y-2">
+                                <div class="flex items-center justify-between">
+                                    <label class="block text-xs font-semibold text-slate-300">Potencia Contratada (kW)</label>
+                                    <button type="button" onclick="toggleModoPotencia()" id="btn-modo-potencia" class="text-[10px] text-orange-400 hover:text-orange-300 font-semibold underline flex items-center gap-1">
+                                        <i data-lucide="layers" class="w-3 h-3"></i> Tramos (P1/P2)
+                                    </button>
+                                </div>
+
+                                <!-- Input Simple Potencia -->
+                                <div id="container-potencia-simple" class="relative">
+                                    <input type="number" step="0.001" id="inp-potencia" value="3.000" oninput="calcular()" 
+                                           class="w-full bg-slate-800/90 border border-slate-700 rounded-xl px-3 py-2.5 text-sm font-semibold text-white focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition">
+                                    <span class="absolute right-3 top-2.5 text-xs text-slate-400">kW</span>
+                                </div>
+
+                                <!-- Inputs por Tramos Potencia (P1 Punta y P2 Valle) -->
+                                <div id="container-potencia-tramos" class="hidden grid grid-cols-2 gap-2 bg-slate-800/50 p-2.5 rounded-xl border border-slate-700/70">
+                                    <div>
+                                        <label class="block text-[10px] text-slate-400 font-medium mb-1">P1 (Punta)</label>
+                                        <input type="number" step="0.001" id="inp-potencia-p1" value="3.450" oninput="calcularTramosPotencia()" 
+                                               class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2 py-1.5 text-xs text-white focus:outline-none focus:border-orange-500">
+                                    </div>
+                                    <div>
+                                        <label class="block text-[10px] text-slate-400 font-medium mb-1">P2 (Valle)</label>
+                                        <input type="number" step="0.001" id="inp-potencia-p2" value="3.450" oninput="calcularTramosPotencia()" 
+                                               class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2 py-1.5 text-xs text-white focus:outline-none focus:border-orange-500">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- CONSUMO CON MODO SIMPLE / TRAMOS (P1/P2/P3) -->
+                            <div class="space-y-2">
+                                <div class="flex items-center justify-between">
+                                    <label class="block text-xs font-semibold text-slate-300">Energía Consumida (kWh)</label>
+                                    <button type="button" onclick="toggleModoConsumo()" id="btn-modo-consumo" class="text-[10px] text-orange-400 hover:text-orange-300 font-semibold underline flex items-center gap-1">
+                                        <i data-lucide="layers" class="w-3 h-3"></i> Tramos (P1/P2/P3)
+                                    </button>
+                                </div>
+
+                                <!-- Input Simple Consumo -->
+                                <div id="container-consumo-simple" class="relative">
+                                    <input type="number" step="1" id="inp-consumo" value="155" oninput="calcular()" 
+                                           class="w-full bg-slate-800/90 border border-slate-700 rounded-xl px-3 py-2.5 text-sm font-semibold text-white focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition">
+                                    <span class="absolute right-3 top-2.5 text-xs text-slate-400">kWh</span>
+                                </div>
+
+                                <!-- Inputs por Tramos Consumo (Punta, Llano, Valle) -->
+                                <div id="container-consumo-tramos" class="hidden grid grid-cols-3 gap-1.5 bg-slate-800/50 p-2.5 rounded-xl border border-slate-700/70">
+                                    <div>
+                                        <label class="block text-[10px] text-slate-400 font-medium mb-1">P1 (Punta)</label>
+                                        <input type="number" step="1" id="inp-consumo-p1" value="45" oninput="calcularTramosConsumo()" 
+                                               class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2 py-1.5 text-xs text-white focus:outline-none focus:border-orange-500">
+                                    </div>
+                                    <div>
+                                        <label class="block text-[10px] text-slate-400 font-medium mb-1">P2 (Llano)</label>
+                                        <input type="number" step="1" id="inp-consumo-p2" value="60" oninput="calcularTramosConsumo()" 
+                                               class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2 py-1.5 text-xs text-white focus:outline-none focus:border-orange-500">
+                                    </div>
+                                    <div>
+                                        <label class="block text-[10px] text-slate-400 font-medium mb-1">P3 (Valle)</label>
+                                        <input type="number" step="1" id="inp-consumo-p3" value="50" oninput="calcularTramosConsumo()" 
+                                               class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2 py-1.5 text-xs text-white focus:outline-none focus:border-orange-500">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-300 mb-1.5">Días Facturados</label>
+                                <div class="relative">
+                                    <input type="number" step="1" id="inp-dias" value="31" oninput="calcular()" 
+                                           class="w-full bg-slate-800/90 border border-slate-700 rounded-xl px-3 py-2.5 text-sm font-semibold text-white focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition">
+                                    <span class="absolute right-3 top-2.5 text-xs text-slate-400">días</span>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-300 mb-1.5">Otros (Mantenimiento, etc.) (€)</label>
+                                <div class="relative">
+                                    <input type="number" step="0.01" id="inp-otros" value="6.18" oninput="calcular()" 
+                                           class="w-full bg-slate-800/90 border border-slate-700 rounded-xl px-3 py-2.5 text-sm font-semibold text-white focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition">
+                                    <span class="absolute right-3 top-2.5 text-xs text-slate-400">€</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-300 mb-1.5">Varios (€)</label>
+                                <div class="relative">
+                                    <input type="number" step="0.01" id="inp-varios" value="0.00" oninput="calcular()" 
+                                           class="w-full bg-slate-800/90 border border-slate-700 rounded-xl px-3 py-2.5 text-sm font-semibold text-white focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition">
+                                    <span class="absolute right-3 top-2.5 text-xs text-slate-400">€</span>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-300 mb-1.5">Impuesto Aplicable (%)</label>
+                                <div class="relative">
+                                    <input type="number" step="0.1" id="inp-impuesto" value="21" oninput="calcular()" 
+                                           class="w-full bg-slate-800/90 border border-slate-700 rounded-xl px-3 py-2.5 text-sm font-semibold text-white focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition">
+                                    <span class="absolute right-3 top-2.5 text-xs text-slate-400">%</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="pt-2 border-t border-slate-800">
+                            <label class="block text-xs font-semibold text-amber-400 mb-1.5">Total Factura Actual del Cliente (€)</label>
+                            <div class="relative">
+                                <input type="number" step="0.01" id="inp-total-cliente" value="55.00" oninput="calcular()" 
+                                       class="w-full bg-slate-800/90 border border-amber-500/50 rounded-xl px-3 py-2.5 text-base font-bold text-amber-300 focus:outline-none focus:ring-2 focus:ring-amber-500 transition">
+                                <span class="absolute right-3 top-3 text-xs text-slate-400">€ Total</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="lg:col-span-6 flex flex-col justify-between space-y-6">
+                        <!-- Cuadro de Desglose de Precios Repsol -->
+                        <div class="bg-gradient-to-br from-slate-900 via-slate-900 to-slate-800 p-6 rounded-2xl border border-slate-700/60 shadow-xl space-y-4">
+                            <h3 class="text-lg font-bold text-orange-400 flex items-center justify-between border-b border-slate-800 pb-3">
+                                <span>Simulación Precio Repsol</span>
+                                <span class="text-xs bg-orange-500/10 text-orange-400 border border-orange-500/30 px-2.5 py-1 rounded-full font-mono">24H Sin Horarios</span>
+                            </h3>
+
+                            <div class="space-y-3 font-mono text-sm">
+                                <div class="flex justify-between items-center bg-slate-800/50 p-2.5 rounded-xl border border-slate-800">
+                                    <span class="text-slate-300 text-xs">Potencia (0,18 * kW * días):</span>
+                                    <span class="font-bold text-white" id="res-potencia">16.74 €</span>
+                                </div>
+
+                                <div class="flex justify-between items-center bg-slate-800/50 p-2.5 rounded-xl border border-slate-800">
+                                    <span class="text-slate-300 text-xs">Consumo (kWh * 0,134):</span>
+                                    <span class="font-bold text-white" id="res-consumo">20.77 €</span>
+                                </div>
+
+                                <div class="flex justify-between items-center bg-slate-800/50 p-2.5 rounded-xl border border-slate-800">
+                                    <span class="text-slate-300 text-xs">Otros / Mantenimiento:</span>
+                                    <span class="font-bold text-slate-200" id="res-otros">6.18 €</span>
+                                </div>
+
+                                <div class="flex justify-between items-center bg-slate-800/50 p-2.5 rounded-xl border border-slate-800">
+                                    <span class="text-slate-300 text-xs">Varios:</span>
+                                    <span class="font-bold text-slate-200" id="res-varios">0.00 €</span>
+                                </div>
+
+                                <div class="flex jus

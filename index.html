@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asesoría Comercial Repsol & Calculadora Comparativa</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+        
+        body {
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: #0f172a;
+            color: #f8fafc;
+        }
+
+        /* Apple Gel & Glassmorphism Aesthetics */
+        .glass-card {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+        }
+
+        .apple-btn-orange {
+            background: linear-gradient(135deg, #ff7e00 0%, #e65c00 100%);
+            box-shadow: 0 4px 15px rgba(255, 126, 0, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.4);
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .apple-btn-orange:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 126, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.6);
+        }
+
+        .apple-btn-blue {
+            background: linear-gradient(135deg, #007aff 0%, #0056b3 100%);
+            box-shadow: 0 4px 15px rgba(0, 122, 255, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.4);
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .apple-btn-blue:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 122, 255, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.6);
+        }
+
+        .tab-btn {
+            transition: all 0.3s ease;
+        }
+        .tab-btn.active {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.3);
+            box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.2);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #475569;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-orange-500 selection:text-white">
+
+    <header class="sticky top-0 z-50 glass-card border-b border-slate-800/80 px-4 lg:px-8 py-4 mb-6">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-2xl apple-btn-orange flex items-center justify-center text-white font-extrabold text-xl shadow-lg">
+                    R
+                </div>
+                <div>
+                    <h1 class="text-xl font-bold tracking-tight text-white flex items-center gap-2">
+                        REPSOL <span class="text-xs bg-orange-500/20 text-orange-400 border border-orange-500/30 px-2 py-0.5 rounded-full font-semibold">Asesoría Comercial</span>
+                    </h1>
+                    <p class="text-xs text-slate-400">Herramienta Interactiva de Cotización & Guía de Capacitación</p>
+                </div>
+            </div>
+
+            <!-- Navigation Tabs -->
+            <nav class="flex flex-wrap items-center justify-center gap-1.5 bg-slate-900/80 p-1.5 rounded-2xl border border-slate-800">
+                <button onclick="switchTab('calc')" id="tab-calc" class="tab-btn active px-4 py-2 rounded-xl text-xs sm:text-sm font-medium text-slate-200 flex items-center gap-2">
+                    <i data-lucide="calculator" class="w-4 h-4 text-orange-400"></i> Calculadora
+                </button>
+                <button onclick="switchTab('tarifas')" id="tab-tarifas" class="tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-medium text-slate-400 hover:text-white flex items-center gap-2">
+                    <i data-lucide="zap" class="w-4 h-4 text-amber-400"></i> Tarifas
+                </button>
+                <button onclick="switchTab('waylet')" id="tab-waylet" class="tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-medium text-slate-400 hover:text-white flex items-center gap-2">
+                    <i data-lucide="smartphone" class="w-4 h-4 text-emerald-400"></i> Waylet
+                </button>
+                <button onclick="switchTab('asistencias')" id="tab-asistencias" class="tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-medium text-slate-400 hover:text-white flex items-center gap-2">
+                    <i data-lucide="gift" class="w-4 h-4 text-purple-400"></i> Asistencias & Regalos
+                </button>
+                <button onclick="switchTab('requisitos')" id="tab-requisitos" class="tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-medium text-slate-400 hover:text-white flex items-center gap-2">
+                    <i data-lucide="file-check" class="w-4 h-4 text-cyan-400"></i> Requisitos
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 lg:px-8 w-full flex-grow mb-10">
+
+        <!-- ================= SECCIÓN 1: CALCULADORA COMPARATIVA ================= -->
+        <section id="sec-calc" class="space-y-6">
+            <div class="glass-card rounded-3xl p-6 lg:p-8">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8 border-b border-slate-800 pb-5">
+                    <div>
+                        <h2 class="text-2xl font-bold text-white flex items-center gap-2">
+                            <i data-lucide="scale" class="text-orange-400"></i> Comparador de Factura Actual vs. Repsol
+                        </h2>
+                        <p class="text-sm text-slate-400 mt-1">Ingresa los datos de la factura del cliente para realizar el cálculo con nuestras tarifas vigentes (0,18 €/kW/día y 0,134 €/kWh).</p>
+                    </div>
+                    <span class="bg-slate-800 border border-slate-700 text-slate-300 text-xs px-3 py-1.5 rounded-full flex items-center gap-1.5 font-mono">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Tarifa Access 2.0TD (&lt;10kW)
+                    </span>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                    <!-- Formulario de entrada de datos -->
+                    <div class="lg:col-span-6 space-y-5 bg-slate-900/60 p-6 rounded-2xl border border-slate-800/80">
+                        <h3 class="text-base font-semibold text-slate-200 border-b border-slate-800 pb-2 flex items-center justify-between">
+                            <span>Datos Extraídos de la Factura</span>
+                            <i data-lucide="file-text" class="w-4 h-4 text-slate-400"></i>
+                        </h3>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <!-- POTENCIA CON MODO SIMPLE / TRAMOS (P1/P2) -->
+                            <div class="space-y-2">
+                                <div class="flex items-center justify-between">
+                                    <label class="block text-xs font-semibold text-slate-300">Potencia Contratada (kW)</label>
+                                    <button type="button" onclick="toggleModoPotencia()" id="btn-modo-potencia" class="text-[10px] text-orange-400 hover:text-orange-300 font-semibold underline flex items-center gap-1">
+                                        <i data-lucide="layers" class="w-3 h-3"></i> Tramos (P1/P2)
+                                    </button>
+                                </div>
+
+                                <!-- Input Simple Potencia -->
+                                <div id="container-potencia-simple" class="relative">
+                                    <input type="number" step="0.001" id="inp-potencia" value="3.000" oninput="calcular()" 
+                                           class="w-full bg-slate-800/90 border border-slate-700 rounded-xl px-3 py-2.5 text-sm font-semibold text-white focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition">
+                                    <span class="absolute right-3 top-2.5 text-xs text-slate-400">kW</span>
+                                </div>
+
+                                <!-- Inputs por Tramos Potencia (P1 Punta y P2 Valle) -->
+                                <div id="container-potencia-tramos" class="hidden grid grid-cols-2 gap-2 bg-slate-800/50 p-2.5 rounded-xl border border-slate-700/70">
+                                    <div>
+                                        <label class="block text-[10px] text-slate-400 font-medium mb-1">P1 (Punta)</label>
+                                        <input type="number" step="0.001" id="inp-potencia-p1" value="3.450" oninput="calcularTramosPotencia()" 
+                                               class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2 py-1.5 text-xs text-white focus:outline-none focus:border-orange-500">
+                                    </div>
+                                    <div>
+                                        <label class="block text-[10px] text-slate-400 font-medium mb-1">P2 (Valle)</label>
+                                        <input type="number" step="0.001" id="inp-potencia-p2" value="3.450" oninput="calcularTramosPotencia()" 
+                                               class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2 py-1.5 text-xs text-white focus:outline-none focus:border-orange-500">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- CONSUMO CON MODO SIMPLE / TRAMOS (P1/P2/P3) -->
+                            <div class="space-y-2">
+                                <div class="flex items-center justify-between">
+                                    <label class="block text-xs font-semibold text-slate-300">Energía Consumida (kWh)</label>
+                                    <button type="button" onclick="toggleModoConsumo()" id="btn-modo-consumo" class="text-[10px] text-orange-400 hover:text-orange-300 font-semibold underline flex items-center gap-1">
+                                        <i data-lucide="layers" class="w-3 h-3"></i> Tramos (P1/P2/P3)
+                                    </button>
+                                </div>
+
+                                <!-- Input Simple Consumo -->
+                                <div id="container-consumo-simple" class="relative">
+                                    <input type="number" step="1" id="inp-consumo" value="155" oninput="calcular()" 
+                                           class="w-full bg-slate-800/90 border border-slate-700 rounded-xl px-3 py-2.5 text-sm font-semibold text-white focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition">
+                                    <span class="absolute right-3 top-2.5 text-xs text-slate-400">kWh</span>
+                                </div>
+
+                                <!-- Inputs por Tramos Consumo (Punta, Llano, Valle) -->
+                                <div id="container-consumo-tramos" class="hidden grid grid-cols-3 gap-1.5 bg-slate-800/50 p-2.5 rounded-xl border border-slate-700/70">
+                                    <div>
+                                        <label class="block text-[10px] text-slate-400 font-medium mb-1">P1 (Punta)</label>
+                                        <input type="number" step="1" id="inp-consumo-p1" value="45" oninput="calcularTramosConsumo()" 
+                                               class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2 py-1.5 text-xs text-white focus:outline-none focus:border-orange-500">
+                                    </div>
+                                    <div>
+                                        <label class="block text-[10px] text-slate-400 font-medium mb-1">P2 (Llano)</label>
+                                        <input type="number" step="1" id="inp-consumo-p2" value="60" oninput="calcularTramosConsumo()" 
+                                               class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2 py-1.5 text-xs text-white focus:outline-none focus:border-orange-500">
+                                    </div>
+                                    <div>
+                                        <label class="block text-[10px] text-slate-400 font-medium mb-1">P3 (Valle)</label>
+                                        <input type="number" step="1" id="inp-consumo-p3" value="50" oninput="calcularTramosConsumo()" 
+                                               class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2 py-1.5 text-xs text-white focus:outline-none focus:border-orange-500">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-300 mb-1.5">Días Facturados</label>
+                                <div class="relative">
+                                    <input type="number" step="1" id="inp-dias" value="31" oninput="calcular()" 
+                                           class="w-full bg-slate-800/90 border border-slate-700 rounded-xl px-3 py-2.5 text-sm font-semibold text-white focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition">
+                                    <span class="absolute right-3 top-2.5 text-xs text-slate-400">días</span>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-300 mb-1.5">Otros (Mantenimiento, etc.) (€)</label>
+                                <div class="relative">
+                                    <input type="number" step="0.01" id="inp-otros" value="6.18" oninput="calcular()" 
+                                           class="w-full bg-slate-800/90 border border-slate-700 rounded-xl px-3 py-2.5 text-sm font-semibold text-white focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition">
+                                    <span class="absolute right-3 top-2.5 text-xs text-slate-400">€</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-300 mb-1.5">Varios (€)</label>
+                                <div class="relative">
+                                    <input type="number" step="0.01" id="inp-varios" value="0.00" oninput="calcular()" 
+                                           class="w-full bg-slate-800/90 border border-slate-700 rounded-xl px-3 py-2.5 text-sm font-semibold text-white focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition">
+                                    <span class="absolute right-3 top-2.5 text-xs text-slate-400">€</span>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-300 mb-1.5">Impuesto Aplicable (%)</label>
+                                <div class="relative">
+                                    <input type="number" step="0.1" id="inp-impuesto" value="21" oninput="calcular()" 
+                                           class="w-full bg-slate-800/90 border border-slate-700 rounded-xl px-3 py-2.5 text-sm font-semibold text-white focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition">
+                                    <span class="absolute right-3 top-2.5 text-xs text-slate-400">%</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="pt-2 border-t border-slate-800">
+                            <label class="block text-xs font-semibold text-amber-400 mb-1.5">Total Factura Actual del Cliente (€)</label>
+                            <div class="relative">
+                                <input type="number" step="0.01" id="inp-total-cliente" value="55.00" oninput="calcular()" 
+                                       class="w-full bg-slate-800/90 border border-amber-500/50 rounded-xl px-3 py-2.5 text-base font-bold text-amber-300 focus:outline-none focus:ring-2 focus:ring-amber-500 transition">
+                                <span class="absolute right-3 top-3 text-xs text-slate-400">€ Total</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="lg:col-span-6 flex flex-col justify-between space-y-6">
+                        <!-- Cuadro de Desglose de Precios Repsol -->
+                        <div class="bg-gradient-to-br from-slate-900 via-slate-900 to-slate-800 p-6 rounded-2xl border border-slate-700/60 shadow-xl space-y-4">
+                            <h3 class="text-lg font-bold text-orange-400 flex items-center justify-between border-b border-slate-800 pb-3">
+                                <span>Simulación Precio Repsol</span>
+                                <span class="text-xs bg-orange-500/10 text-orange-400 border border-orange-500/30 px-2.5 py-1 rounded-full font-mono">24H Sin Horarios</span>
+                            </h3>
+
+                            <div class="space-y-3 font-mono text-sm">
+                                <div class="flex justify-between items-center bg-slate-800/50 p-2.5 rounded-xl border border-slate-800">
+                                    <span class="text-slate-300 text-xs">Potencia (0,18 * kW * días):</span>
+                                    <span class="font-bold text-white" id="res-potencia">16.74 €</span>
+                                </div>
+
+                                <div class="flex justify-between items-center bg-slate-800/50 p-2.5 rounded-xl border border-slate-800">
+                                    <span class="text-slate-300 text-xs">Consumo (kWh * 0,134):</span>
+                                    <span class="font-bold text-white" id="res-consumo">20.77 €</span>
+                                </div>
+
+                                <div class="flex justify-between items-center bg-slate-800/50 p-2.5 rounded-xl border border-slate-800">
+                                    <span class="text-slate-300 text-xs">Otros / Mantenimiento:</span>
+                                    <span class="font-bold text-slate-200" id="res-otros">6.18 €</span>
+                                </div>
+
+                                <div class="flex justify-between items-center bg-slate-800/50 p-2.5 rounded-xl border border-slate-800">
+                                    <span class="text-slate-300 text-xs">Varios:</span>
+                                    <span class="font-bold text-slate-200" id="res-varios">0.00 €</span>
+                                </div>
+
+                                <div class="flex justify-between items-center bg-slate-800/80 p-2.5 rounded-xl border border-slate-700">
+                                    <span class="text-slate-300 text-xs">Subtotal Base:</span>
+                                    <span class="font-bold text-slate-100" id="res-subtotal">43.69 €</span>
+                                </div>
+
+                                <div class="flex justify-between items-center bg-slate-800/80 p-2.5 rounded-xl border border-slate-700">
+                                    <span class="text-slate-300 text-xs">Impuestos (<span id="txt-impuesto-porcentaje">21</span>%):</span>
+                                    <span class="font-bold text-slate-100" id="res-impuestos">9.18 €</span>
+                                </div>
+                            </div>
+
+                            <div class="pt-2 border-t border-slate-700/80 flex justify-between items-center">
+                                <span class="text-base font-bold text-white">TOTAL REPSOL:</span>
+                                <span class="text-2xl font-extrabold text-orange-400 font-mono" id="res-total-repsol">52.86 €</span>
+                            </div>
+                        </div>
+
+                        <!-- Banner del Resultado del Ahorro -->
+                        <div id="card-ahorro" class="p-6 rounded-2xl border transition-all duration-300 flex flex-col justify-center items-center text-center space-y-2 glass-card">
+                            <span class="text-xs uppercase font-bold tracking-widest text-slate-400">Resultado de la Asesoría</span>
+                            <div class="text-3xl font-black font-mono" id="txt-diferencia">Ahorro: 2.14 €</div>
+                            <p class="text-xs text-slate-300 max-w-md" id="txt-conclusion">Con Repsol el cliente pagará menos en este periodo de facturación.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= SECCIÓN 2: TARIFAS DE ENERGÍA ================= -->
+        <section id="sec-tarifas" class="hidden space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+
+                <!-- Tarifa Sin Horarios -->
+                <div class="glass-card p-6 rounded-3xl flex flex-col justify-between border-t-4 border-t-orange-500 hover:scale-[1.02] transition">
+                    <div>
+                        <div class="w-12 h-12 rounded-2xl bg-orange-500/10 text-orange-400 flex items-center justify-center mb-4 border border-orange-500/20">
+                            <i data-lucide="clock" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2">1. Tarifa Sin Horarios</h3>
+                        <p class="text-xs text-slate-400 mb-4">Coste fijo por kW durante 12 meses. Pagas lo que consumes sin preocuparte del reloj.</p>
+                        
+                        <div class="bg-slate-900/60 p-3 rounded-xl space-y-2 border border-slate-800 text-xs font-mono">
+                            <div class="flex justify-between"><span class="text-slate-400">Potencia:</span> <span class="text-white font-bold">65,80 €/kW año</span></div>
+                            <div class="flex justify-between"><span class="text-slate-400">Término Energía:</span> <span class="text-orange-400 font-bold">0,18 €/kW/día</span></div>
+                            <div class="flex justify-between"><span class="text-slate-400">Sin Asistencia:</span> <span class="text-white font-bold">0,144 €/kWh</span></div>
+                            <div class="flex justify-between"><span class="text-slate-400">Con Asistencia:</span> <span class="text-emerald-400 font-bold">0,134 €/kWh</span></div>
+                        </div>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-slate-800 text-xs text-slate-400 italic">
+                        * Ideal para hogares con consumo constante durante todo el día.
+                    </div>
+                </div>
+
+                <!-- Tarifa Indexada -->
+                <div class="glass-card p-6 rounded-3xl flex flex-col justify-between border-t-4 border-t-blue-500 hover:scale-[1.02] transition">
+                    <div>
+                        <div class="w-12 h-12 rounded-2xl bg-blue-500/10 text-blue-400 flex items-center justify-center mb-4 border border-blue-500/20">
+                            <i data-lucide="trending-up" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2">2. Tarifa Indexada</h3>
+                        <p class="text-xs text-slate-400 mb-4">Precio que fluctúa según el coste real del mercado eléctrico en cada hora.</p>
+                        
+                        <div class="bg-slate-900/60 p-3 rounded-xl space-y-2 border border-slate-800 text-xs font-mono">
+                            <div class="flex justify-between"><span class="text-slate-400">Potencia (Access):</span> <span class="text-white font-bold">45,80 €/kW año</span></div>
+                            <div class="flex justify-between"><span class="text-slate-400">Término Energía:</span> <span class="text-blue-400 font-bold">0,125 €/kWh</span></div>
+                            <div class="flex justify-between"><span class="text-slate-400">Margen Comercial:</span> <span class="text-slate-300 font-bold">+ Coste Mercado</span></div>
+                        </div>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-slate-800 text-xs text-slate-400 italic">
+                        * Para clientes que optimizan su consumo en horas valle.
+                    </div>
+                </div>
+
+                <!-- Batería Virtual -->
+                <div class="glass-card p-6 rounded-3xl flex flex-col justify-between border-t-4 border-t-emerald-500 hover:scale-[1.02] transition">
+                    <div>
+                        <div class="w-12 h-12 rounded-2xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center mb-4 border border-emerald-500/20">
+                            <i data-lucide="sun" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2">3. Batería Virtual</h3>
+                        <p class="text-xs text-slate-400 mb-4">Para viviendas con placas solares. Acumula el valor de tus excedentes.</p>
+                        
+                        <div class="bg-slate-900/60 p-3 rounded-xl space-y-2 border border-slate-800 text-xs font-mono">
+                            <div class="flex justify-between"><span class="text-slate-400">Pago Excedente:</span> <span class="text-emerald-400 font-bold">0,06 €/kWh</span></div>
+                            <div class="flex justify-between"><span class="text-slate-400">Consumo Con Manten.:</span> <span class="text-white font-bold">0,167 €/kWh</span></div>
+                            <div class="flex justify-between"><span class="text-slate-400">Consumo Sin Manten.:</span> <span class="text-white font-bold">0,179 €/kWh</span></div>
+                        </div>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-slate-800 text-xs text-emerald-400 font-semibold flex items-center gap-1">
+                        <i data-lucide="share-2" class="w-3.5 h-3.5"></i> Puede compartir el excedente con 2ª vivienda.
+                    </div>
+                </div>
+
+                <!-- Tarifa Gas -->
+                <div class="glass-card p-6 rounded-3xl flex flex-col justify-between border-t-4 border-t-purple-500 hover:scale-[1.02] transition">
+                    <div>
+                        <div class="w-12 h-12 rounded-2xl bg-purple-500/10 text-purple-400 flex items-center justify-center mb-4 border border-purple-500/20">
+                            <i data-lucide="flame" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2">4. Tarifa Gas</h3>
+                        <p class="text-xs text-slate-400 mb-4">Suministro de gas natural competitivo para el hogar.</p>
+                        
+                        <div class="bg-slate-900/60 p-3 rounded-xl space-y-2 border border-slate-800 text-xs">
+                            <div class="p-2 bg-purple-500/10 border border-purple-500/30 rounded-lg text-purple-300 font-medium">
+                                Exclusivo para clientes ubicados en la <strong>Península</strong>.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-slate-800 text-xs text-slate-400 italic">
+                        * Combinable con Luz para mayor descuento en Waylet.
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ================= SECCIÓN 3: WAYLET (SOLUCIONES DIGITALES) ================= -->
+        <section id="sec-waylet" class="hidden space-y-6">
+            <div class="glass-card p-6 lg:p-8 rounded-3xl">
+                <div class="flex items-center gap-4 mb-6 border-b border-slate-800 pb-4">
+                    <div class="w-12 h-12 rounded-2xl apple-btn-orange flex items-center justify-center text-white">
+                        <i data-lucide="smartphone" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-2xl font-bold text-white">Soluciones Digitales: App Waylet</h2>
+                        <p class="text-xs text-slate-400">Planes de ahorro cruzado según los servicios contratados con Repsol.</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- Nivel 1 -->
+                    <div class="bg-slate-900/80 p-5 rounded-2xl border border-slate-800 space-y-4 relative overflow-hidden">
+                        <span class="absolute top-3 right-3 text-xs bg-slate-800 text-slate-400 px-2 py-0.5 rounded-full font-bold">Nivel 1</span>
+                        <h3 class="text-base font-bold text-orange-400">Solo Coche</h3>
+                        <div class="text-3xl font-extrabold text-white font-mono">0,05 € <span class="text-xs text-slate-400 font-normal">/ litro</span></div>
+                        <div class="space-y-2 text-xs border-t border-slate-800 pt-3">
+                            <div class="flex justify-between"><span>Recarga Eléctrica:</span> <span class="font-bold text-emerald-400">5%</span></div>
+                            <div class="flex justify-between"><span>Compras Repsol Store:</span> <span class="font-bold text-cyan-400">3%</span></div>
+                        </div>
+                    </div>
+
+                    <!-- Nivel 2 -->
+                    <div class="bg-slate-900/80 p-5 rounded-2xl border border-slate-800 space-y-4 relative overflow-hidden">
+                        <span class="absolute top-3 right-3 text-xs bg-orange-500/20 text-orange-400 px-2 py-0.5 rounded-full font-bold">Nivel 2</span>
+                        <h3 class="text-base font-bold text-orange-400">Coche + Luz O Gas</h3>
+                        <div class="text-3xl font-extrabold text-white font-mono">0,10 € <span class="text-xs text-slate-400 font-normal">/ litro</span></div>
+                        <div class="space-y-2 text-xs border-t border-slate-800 pt-3">
+                            <div class="flex justify-between"><span>Recarga Eléctrica:</span> <span class="font-bold text-emerald-400">20%</span></div>
+                            <div class="flex justify-between"><span>Compras Repsol Store:</span> <span class="font-bold text-cyan-400">5%</span></div>
+                        </div>
+                    </div>
+
+                    <!-- Nivel 3 -->
+                    <div class="bg-slate-900/80 p-5 rounded-2xl border border-slate-800 space-y-4 relative overflow-hidden">
+                        <span class="absolute top-3 right-3 text-xs bg-orange-500/20 text-orange-400 px-2 py-0.5 rounded-full font-bold">Nivel 3</span>
+                        <h3 class="text-base font-bold text-orange-400">Coche + Luz Y Gas</h3>
+                        <div class="text-3xl font-extrabold text-white font-mono">0,15 € <span class="text-xs text-slate-400 font-normal">/ litro</span></div>
+                        <div class="space-y-2 text-xs border-t border-slate-800 pt-3">
+                            <div class="flex justify-between"><span>Recarga Eléctrica:</span> <span class="font-bold text-emerald-400">30%</span></div>
+                            <div class="flex justify-between"><span>Compras Repsol Store:</span> <span class="font-bold text-cyan-400">8%</span></div>
+                        </div>
+                    </div>
+
+                    <!-- Nivel 4 -->
+                    <div class="bg-slate-900/80 p-5 rounded-2xl border border-orange-500/40 space-y-4 relative overflow-hidden shadow-lg shadow-orange-500/5">
+                        <span class="absolute top-3 right-3 text-xs bg-orange-500 text-white px-2 py-0.5 rounded-full font-bold">Nivel 4 Max</span>
+                        <h3 class="text-base font-bold text-orange-400">Coche + Luz + Gas + Solar</h3>
+                        <div class="text-3xl font-extrabold text-white font-mono">0,20 € <span class="text-xs text-slate-400 font-normal">/ litro</span></div>
+                        <div class="space-y-2 text-xs border-t border-slate-800 pt-3">
+                            <div class="flex justify-between"><span>Recarga Eléctrica:</span> <span class="font-bold text-emerald-400">40%</span></div>
+                            <div class="flex justify-between"><span>Compras Repsol Store:</span> <span class="font-bold text-cyan-400">10%</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= SECCIÓN 4: ASISTENCIAS Y REGALOS ================= -->
+        <section id="sec-asistencias" class="hidden space-y-6">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+                <!-- Asistencias -->
+                <div class="glass-card p-6 rounded-3xl space-y-6">
+                    <h2 class="text-xl font-bold text-white flex items-center gap-2 border-b border-slate-800 pb-3">
+                        <i data-lucide="shield-check" class="text-purple-400"></i> Servicios de Asistencia
+                    </h2>
+
+                    <div class="space-y-4">
+                        <div class="bg-slate-900/70 p-4 rounded-2xl border border-slate-800 flex justify-between items-center">
+                            <div>
+                                <h4 class="font-bold text-white text-sm">24H Plus</h4>
+                                <p class="text-xs text-slate-400">Asistencia rápida para el hogar</p>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-lg font-bold text-purple-400 font-mono">6,18 € <span class="text-xs text-slate-400">/mes</span></div>
+                                <span class="text-[10px] text-slate-500">Con IGIC incluido</span>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-900/70 p-4 rounded-2xl border border-slate-800 flex justify-between items-center">
+                            <div>
+                                <h4 class="font-bold text-white text-sm">Integral Hogar Confort</h4>
+                                <p class="text-xs text-slate-400">Cobertura integral de averías</p>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-lg font-bold text-purple-400 font-mono">8,83 € <span class="text-xs text-slate-400">/mes</span></div>
+                                <span class="text-[10px] text-slate-500">Con IGIC incluido</span>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-900/70 p-4 rounded-2xl border border-slate-800 flex justify-between items-center">
+                            <div>
+                                <h4 class="font-bold text-white text-sm">Integral Gas</h4>
+                                <p class="text-xs text-slate-400">Mantenimiento caldera y gas</p>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-lg font-bold text-purple-400 font-mono">10,79 € <span class="text-xs text-slate-400">/mes (meses 1-6)</span></div>
+                                <span class="text-xs text-slate-300 font-mono">13,49 € /mes (a partir del 7º mes)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Promociones Tarjetas Regalo -->
+                <div class="glass-card p-6 rounded-3xl space-y-6">
+                    <h2 class="text-xl font-bold text-white flex items-center gap-2 border-b border-slate-800 pb-3">
+                        <i data-lucide="gift" class="text-emerald-400"></i> Promociones Tarjeta Regalo (Campaña)
+                    </h2>
+
+                    <div class="space-y-4">
+                        <div class="bg-gradient-to-r from-slate-900 to-slate-800 p-4 rounded-2xl border border-slate-700 flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-xl apple-btn-blue flex items-center justify-center font-bold text-white">50€</div>
+                                <div>
+                                    <h4 class="font-bold text-white text-sm">Cambio a Repsol</h4>
+                                    <p class="text-xs text-slate-400">Por cambiar el suministro a Repsol</p>
+                                </div>
+                            </div>
+                            <i data-lucide="check-circle" class="text-emerald-400 w-5 h-5"></i>
+                        </div>
+
+                        <div class="bg-gradient-to-r from-slate-900 to-slate-800 p-4 rounded-2xl border border-slate-700 flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-xl apple-btn-orange flex items-center justify-center font-bold text-white">75€</div>
+                                <div>
+                                    <h4 class="font-bold text-white text-sm">Suministro + Asistencia</h4>
+                                    <p class="text-xs text-slate-400">Luz o Gas + Servicio de Mantenimiento</p>
+                                </div>
+                            </div>
+                            <i data-lucide="check-circle" class="text-emerald-400 w-5 h-5"></i>
+                        </div>
+
+                        <div class="bg-gradient-to-r from-slate-900 to-slate-800 p-4 rounded-2xl border border-emerald-500/40 flex items-center justify-between shadow-lg shadow-emerald-500/5">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-500 to-teal-400 flex items-center justify-center font-bold text-white">150€</div>
+                                <div>
+                                    <h4 class="font-bold text-white text-sm">Dual + Asistencia</h4>
+                                    <p class="text-xs text-slate-400">Luz + Gas + Servicio de Asistencia</p>
+                                </div>
+                            </div>
+                            <span class="text-xs bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-2 py-1 rounded-full font-bold">Máximo Ahorro</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ================= SECCIÓN 5: REQUISITOS Y PROCEDIMIENTO ================= -->
+        <section id="sec-requisitos" class="hidden space-y-6">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+                <!-- Requisitos de Contratación -->
+                <div class="lg:col-span-7 glass-card p-6 rounded-3xl space-y-5">
+                    <h2 class="text-xl font-bold text-white flex items-center gap-2 border-b border-slate-800 pb-3">
+                        <i data-lucide="clipboard-check" class="text-cyan-400"></i> Requisitos de Contratación
+                    </h2>
+
+                    <div class="space-y-4">
+                        <div class="bg-slate-900/60 p-4 rounded-2xl border border-slate-800">
+                            <h3 class="text-sm font-bold text-cyan-400 mb-2">1. Documentación de Identidad Aceptada</h3>
+                            <div class="flex flex-wrap gap-2 text-xs">
+                                <span class="bg-slate-800 px-2.5 py-1 rounded-lg text-slate-300">DNI</span>
+                                <span class="bg-slate-800 px-2.5 py-1 rounded-lg text-slate-300">NIE</span>
+                                <span class="bg-slate-800 px-2.5 py-1 rounded-lg text-slate-300">Carnet de Conducir</span>
+                                <span class="bg-slate-800 px-2.5 py-1 rounded-lg text-slate-300">TIE</span>
+                                <span class="bg-slate-800 px-2.5 py-1 rounded-lg text-slate-300">Permiso de Residencia</span>
+                                <span class="bg-slate-800 px-2.5 py-1 rounded-lg text-slate-300">Tarjeta Roja</span>
+                                <span class="bg-slate-800 px-2.5 py-1 rounded-lg text-slate-300">Tarjeta Familiar Comunitario</span>
+                                <span class="bg-slate-800 px-2.5 py-1 rounded-lg text-slate-300">Permiso de Permanencia por Trámite (adjuntar Pasaporte)</span>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-900/60 p-4 rounded-2xl border border-slate-800">
+                            <h3 class="text-sm font-bold text-cyan-400 mb-1">2. Factura del Suministro</h3>
+                            <p class="text-xs text-slate-300">Se acepta Física, PDF o Foto, pero <strong class="text-amber-400">SIEMPRE en formato/soporte físico</strong> al procesar.</p>
+                        </div>
+
+                        <div class="bg-slate-900/60 p-4 rounded-2xl border border-slate-800">
+                            <h3 class="text-sm font-bold text-cyan-400 mb-1">3. Cambio de Titularidad</h3>
+                            <p class="text-xs text-slate-300 mb-2">Requiere Documento (1) + Factura (2) + <strong class="text-white">Justo Título:</strong></p>
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs text-center font-medium">
+                                <div class="bg-slate-800/80 p-2 rounded-xl border border-slate-700 text-slate-300">Escritura</div>
+                                <div class="bg-slate-800/80 p-2 rounded-xl border border-slate-700 text-slate-300">Contrato Compraventa</div>
+                                <div class="bg-slate-800/80 p-2 rounded-xl border border-slate-700 text-slate-300">El IUI / Alquiler</div>
+                            </div>
+                        </div>
+
+                        <!-- Red Flag Bono Social -->
+                        <div class="bg-red-500/10 border border-red-500/30 p-4 rounded-2xl text-xs space-y-1">
+                            <div class="flex items-center gap-2 text-red-400 font-bold">
+                                <i data-lucide="alert-triangle" class="w-4 h-4"></i> ¡RED FLAG! BONO SOCIAL
+                            </div>
+                            <p class="text-slate-300">NO vender / NO ofrecer a clientes con Bono Social activo (perderían el beneficio). Excepción: si aún no lo ha solicitado, tras cambiarse a Repsol podrá tramitarlo si le corresponde.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Soporte y Operativa -->
+                <div class="lg:col-span-5 glass-card p-6 rounded-3xl space-y-5 flex flex-col justify-between">
+                    <div>
+                        <h2 class="text-xl font-bold text-white flex items-center gap-2 border-b border-slate-800 pb-3">
+                            <i data-lucide="headphones" class="text-orange-400"></i> Operativa & Soporte
+                        </h2>
+
+                        <div class="mt-4 bg-orange-500/10 border border-orange-500/30 p-4 rounded-2xl text-center">
+                            <span class="text-xs text-orange-400 font-semibold uppercase tracking-wider">Teléfono Soporte Comercial</span>
+                            <div class="text-3xl font-extrabold text-white font-mono mt-1">91 958 35 07</div>
+                        </div>
+
+                        <div class="mt-5 space-y-3">
+                            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400">Pasos para Procesar Venta:</h3>
+                            <ol class="space-y-2 text-xs text-slate-300 font-medium">
+                                <li class="flex items-center gap-2 bg-slate-900/60 p-2.5 rounded-xl border border-slate-800">
+                                    <span class="w-5 h-5 rounded-full bg-orange-500/20 text-orange-400 flex items-center justify-center font-bold text-[10px]">1</span>
+                                    Consentimiento del cliente
+                                </li>
+                                <li class="flex items-center gap-2 bg-slate-900/60 p-2.5 rounded-xl border border-slate-800">
+                                    <span class="w-5 h-5 rounded-full bg-orange-500/20 text-orange-400 flex items-center justify-center font-bold text-[10px]">2</span>
+                                    My Store &rarr; Click en Banner
+                                </li>
+                                <li class="flex items-center gap-2 bg-slate-900/60 p-2.5 rounded-xl border border-slate-800">
+                                    <span class="w-5 h-5 rounded-full bg-orange-500/20 text-orange-400 flex items-center justify-center font-bold text-[10px]">3</span>
+                                    Portal Colaboradores (/colaboradores)
+                                </li>
+                                <li class="flex items-center gap-2 bg-slate-900/60 p-2.5 rounded-xl border border-slate-800">
+                                    <span class="w-5 h-5 rounded-full bg-orange-500/20 text-orange-400 flex items-center justify-center font-bold text-[10px]">4</span>
+                                    Ingresar Datos del Cliente
+                                </li>
+                                <li class="flex items-center gap-2 bg-slate-900/60 p-2.5 rounded-xl border border-slate-800">
+                                    <span class="w-5 h-5 rounded-full bg-orange-500/20 text-orange-400 flex items-center justify-center font-bold text-[10px]">5</span>
+                                    Ir al Procedimiento de Repsol
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+
+                    <div class="bg-amber-500/10 border border-amber-500/30 p-3.5 rounded-2xl text-xs text-amber-300">
+                        <strong>NOTA IMPORTANTE:</strong> Se requiere mantener abiertas tanto la <strong>sesión de Windows</strong> como la <strong>sesión de My Store</strong> para que la venta sea computada correctamente.
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="border-t border-slate-800/80 py-4 px-6 text-center text-xs text-slate-500 bg-slate-950/50">
+        <p>Plataforma Interna de Capacitación & Asesoría Comercial — Repsol Energy</p>
+    </footer>
+
+    <script>
+        // Inicializar Iconos Lucide
+        lucide.createIcons();
+
+        // Variables de estado para los Modos de Tramos
+        let esModoTramosPotencia = false;
+        let esModoTramosConsumo = false;
+
+        // Alternar modo de potencia
+        function toggleModoPotencia() {
+            esModoTramosPotencia = !esModoTramosPotencia;
+            const simpleContainer = document.getElementById('container-potencia-simple');
+            const tramosContainer = document.getElementById('container-potencia-tramos');
+            const btnModo = document.getElementById('btn-modo-potencia');
+
+            if (esModoTramosPotencia) {
+                simpleContainer.classList.add('hidden');
+                tramosContainer.classList.remove('hidden');
+                btnModo.innerHTML = `<i data-lucide="check-circle-2" class="w-3 h-3 text-emerald-400"></i> Modo Único`;
+                calcularTramosPotencia();
+            } else {
+                simpleContainer.classList.remove('hidden');
+                tramosContainer.classList.add('hidden');
+                btnModo.innerHTML = `<i data-lucide="layers" class="w-3 h-3"></i> Tramos (P1/P2)`;
+                calcular();
+            }
+            lucide.createIcons();
+        }
+
+        // Alternar modo de consumo
+        function toggleModoConsumo() {
+            esModoTramosConsumo = !esModoTramosConsumo;
+            const simpleContainer = document.getElementById('container-consumo-simple');
+            const tramosContainer = document.getElementById('container-consumo-tramos');
+            const btnModo = document.getElementById('btn-modo-consumo');
+
+            if (esModoTramosConsumo) {
+                simpleContainer.classList.add('hidden');
+                tramosContainer.classList.remove('hidden');
+                btnModo.innerHTML = `<i data-lucide="check-circle-2" class="w-3 h-3 text-emerald-400"></i> Modo Único`;
+                calcularTramosConsumo();
+            } else {
+                simpleContainer.classList.remove('hidden');
+                tramosContainer.classList.add('hidden');
+                btnModo.innerHTML = `<i data-lucide="layers" class="w-3 h-3"></i> Tramos (P1/P2/P3)`;
+                calcular();
+            }
+            lucide.createIcons();
+        }
+
+        // Cálculo cuando se introducen tramos de Potencia
+        function calcularTramosPotencia() {
+            const p1 = parseFloat(document.getElementById('inp-potencia-p1').value) || 0;
+            // Para la potencia de facturación en Repsol, tomamos la P1 (potencia principal)
+            document.getElementById('inp-potencia').value = p1;
+            calcular();
+        }
+
+        // Cálculo cuando se introducen tramos de Consumo (P1 + P2 + P3)
+        function calcularTramosConsumo() {
+            const p1 = parseFloat(document.getElementById('inp-consumo-p1').value) || 0;
+            const p2 = parseFloat(document.getElementById('inp-consumo-p2').value) || 0;
+            const p3 = parseFloat(document.getElementById('inp-consumo-p3').value) || 0;
+            const totalSuma = p1 + p2 + p3;
+            document.getElementById('inp-consumo').value = totalSuma;
+            calcular();
+        }
+
+        // Cambio de Pestañas
+        function switchTab(tabId) {
+            const tabs = ['calc', 'tarifas', 'waylet', 'asistencias', 'requisitos'];
+            tabs.forEach(id => {
+                const sec = document.getElementById(`sec-${id}`);
+                const btn = document.getElementById(`tab-${id}`);
+                if (id === tabId) {
+                    sec.classList.remove('hidden');
+                    btn.classList.add('active', 'text-white');
+                    btn.classList.remove('text-slate-400');
+                } else {
+                    sec.classList.add('hidden');
+                    btn.classList.remove('active', 'text-white');
+                    btn.classList.add('text-slate-400');
+                }
+            });
+        }
+
+        // Función Principal de Cálculo Comparativo
+        function calcular() {
+            // Lectura de inputs
+            const potencia = parseFloat(document.getElementById('inp-potencia').value) || 0;
+            const consumo = parseFloat(document.getElementById('inp-consumo').value) || 0;
+            const dias = parseFloat(document.getElementById('inp-dias').value) || 0;
+            const otros = parseFloat(document.getElementById('inp-otros').value) || 0;
+            const varios = parseFloat(document.getElementById('inp-varios').value) || 0;
+            const impuestoPct = parseFloat(document.getElementById('inp-impuesto').value) || 0;
+            const totalCliente = parseFloat(document.getElementById('inp-total-cliente').value) || 0;
+
+            // Fórmulas especificadas en las notas y hoja Excel:
+            // Potencia: 0.18 * potencia * días
+            const potenciaRepsol = 0.18 * potencia * dias;
+
+            // Consumo: consumo * 0.134
+            const consumoRepsol = consumo * 0.134;
+
+            // Subtotal Base
+            const subtotal = potenciaRepsol + consumoRepsol + otros + varios;
+
+            // Impuesto
+            const impuestos = subtotal * (impuestoPct / 100);
+
+            // Total Repsol: (Potencia + Consumo + Otros + Varios) * (1 + Impuesto/100)
+            const totalRepsol = subtotal + impuestos;
+
+            // Diferencia
+            const ahorro = totalCliente - totalRepsol;
+
+            // Renderizar resultados en DOM
+            document.getElementById('res-potencia').textContent = potenciaRepsol.toFixed(2) + ' €';
+            document.getElementById('res-consumo').textContent = consumoRepsol.toFixed(2) + ' €';
+            document.getElementById('res-otros').textContent = otros.toFixed(2) + ' €';
+            document.getElementById('res-varios').textContent = varios.toFixed(2) + ' €';
+            document.getElementById('res-subtotal').textContent = subtotal.toFixed(2) + ' €';
+            document.getElementById('txt-impuesto-porcentaje').textContent = impuestoPct;
+            document.getElementById('res-impuestos').textContent = impuestos.toFixed(2) + ' €';
+            document.getElementById('res-total-repsol').textContent = totalRepsol.toFixed(2) + ' €';
+
+            // Tarjeta de Ahorro / Conclusión
+            const cardAhorro = document.getElementById('card-ahorro');
+            const txtDiferencia = document.getElementById('txt-diferencia');
+            const txtConclusion = document.getElementById('txt-conclusion');
+
+            if (ahorro > 0) {
+                cardAhorro.className = "p-6 rounded-2xl border transition-all duration-300 flex flex-col justify-center items-center text-center space-y-2 bg-emerald-500/10 border-emerald-500/40 shadow-lg shadow-emerald-500/10";
+                txtDiferencia.className = "text-3xl font-black font-mono text-emerald-400";
+                txtDiferencia.textContent = `¡Ahorro de ${ahorro.toFixed(2)} €!`;
+                txtConclusion.textContent = `Con Repsol el cliente se ahorra un ${((ahorro / totalCliente) * 100).toFixed(1)}% respecto a su factura actual.`;
+            } else if (ahorro < 0) {
+                const sobrecoste = Math.abs(ahorro);
+                cardAhorro.className = "p-6 rounded-2xl border transition-all duration-300 flex flex-col justify-center items-center text-center space-y-2 bg-amber-500/10 border-amber-500/40";
+                txtDiferencia.className = "text-3xl font-black font-mono text-amber-400";
+                txtDiferencia.textContent = `Diferencia: +${sobrecoste.toFixed(2)} €`;
+                txtConclusion.textContent = `Se recomienda ofrecer servicios de asistencia o acumulación Waylet para compensar el beneficio final.`;
+            } else {
+                cardAhorro.className = "p-6 rounded-2xl border transition-all duration-300 flex flex-col justify-center items-center text-center space-y-2 glass-card";
+                txtDiferencia.className = "text-3xl font-black font-mono text-slate-200";
+                txtDiferencia.textContent = `Mismo Importe: 0.00 €`;
+                txtConclusion.textContent = `Los costes de la tarifa base son equivalentes.`;
+            }
+        }
+
+        // Ejecutar cálculo inicial al cargar
+        window.onload = function() {
+            calcular();
+        };
+    </script>
+</body>
+</html>

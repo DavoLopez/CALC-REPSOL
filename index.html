@@ -55,6 +55,13 @@
             box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.2);
         }
 
+        /* Modal Blur */
+        .modal-backdrop {
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
         /* Custom Scrollbar */
         ::-webkit-scrollbar {
             width: 8px;
@@ -71,9 +78,9 @@
         }
     </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between selection:bg-orange-500 selection:text-white">
+<body class="min-h-screen flex flex-col justify-between selection:bg-orange-500 selection:text-white relative">
 
-    <header class="sticky top-0 z-50 glass-card border-b border-slate-800/80 px-4 lg:px-8 py-4 mb-6">
+    <header class="sticky top-0 z-40 glass-card border-b border-slate-800/80 px-4 lg:px-8 py-4 mb-6">
         <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
             <div class="flex items-center space-x-3">
                 <div class="w-10 h-10 rounded-2xl apple-btn-orange flex items-center justify-center text-white font-extrabold text-xl shadow-lg">
@@ -89,23 +96,26 @@
 
             <!-- Navigation Tabs -->
             <nav class="flex flex-wrap items-center justify-center gap-1.5 bg-slate-900/80 p-1.5 rounded-2xl border border-slate-800">
-                <button onclick="switchTab('calc')" id="tab-calc" class="tab-btn active px-3.5 py-2 rounded-xl text-xs sm:text-sm font-medium text-slate-200 flex items-center gap-2">
+                <button onclick="switchTab('calc')" id="tab-calc" class="tab-btn active px-3 py-1.5 rounded-xl text-xs font-medium text-slate-200 flex items-center gap-1.5">
                     <i data-lucide="calculator" class="w-4 h-4 text-orange-400"></i> Calculadora
                 </button>
-                <button onclick="switchTab('tarifas')" id="tab-tarifas" class="tab-btn px-3.5 py-2 rounded-xl text-xs sm:text-sm font-medium text-slate-400 hover:text-white flex items-center gap-2">
+                <button onclick="switchTab('tarifas')" id="tab-tarifas" class="tab-btn px-3 py-1.5 rounded-xl text-xs font-medium text-slate-400 hover:text-white flex items-center gap-1.5">
                     <i data-lucide="zap" class="w-4 h-4 text-amber-400"></i> Tarifas
                 </button>
-                <button onclick="switchTab('waylet')" id="tab-waylet" class="tab-btn px-3.5 py-2 rounded-xl text-xs sm:text-sm font-medium text-slate-400 hover:text-white flex items-center gap-2">
+                <button onclick="switchTab('waylet')" id="tab-waylet" class="tab-btn px-3 py-1.5 rounded-xl text-xs font-medium text-slate-400 hover:text-white flex items-center gap-1.5">
                     <i data-lucide="smartphone" class="w-4 h-4 text-emerald-400"></i> Waylet
                 </button>
-                <button onclick="switchTab('asistencias')" id="tab-asistencias" class="tab-btn px-3.5 py-2 rounded-xl text-xs sm:text-sm font-medium text-slate-400 hover:text-white flex items-center gap-2">
-                    <i data-lucide="gift" class="w-4 h-4 text-purple-400"></i> Asistencias & Tarjeta Regalo
+                <button onclick="switchTab('asistencias')" id="tab-asistencias" class="tab-btn px-3 py-1.5 rounded-xl text-xs font-medium text-slate-400 hover:text-white flex items-center gap-1.5">
+                    <i data-lucide="gift" class="w-4 h-4 text-purple-400"></i> Asistencias & Regalo
                 </button>
-                <button onclick="switchTab('requisitos')" id="tab-requisitos" class="tab-btn px-3.5 py-2 rounded-xl text-xs sm:text-sm font-medium text-slate-400 hover:text-white flex items-center gap-2">
-                    <i data-lucide="file-check" class="w-4 h-4 text-cyan-400"></i> Requisitos & Altas
+                <button onclick="switchTab('requisitos')" id="tab-requisitos" class="tab-btn px-3 py-1.5 rounded-xl text-xs font-medium text-slate-400 hover:text-white flex items-center gap-1.5">
+                    <i data-lucide="file-check" class="w-4 h-4 text-cyan-400"></i> Requisitos
                 </button>
-                <button onclick="switchTab('proceso')" id="tab-proceso" class="tab-btn px-3.5 py-2 rounded-xl text-xs sm:text-sm font-medium text-slate-400 hover:text-white flex items-center gap-2">
-                    <i data-lucide="shield-alert" class="w-4 h-4 text-red-400"></i> Operativa & Red Flags
+                <button onclick="switchTab('proceso')" id="tab-proceso" class="tab-btn px-3 py-1.5 rounded-xl text-xs font-medium text-slate-400 hover:text-white flex items-center gap-1.5">
+                    <i data-lucide="shield-alert" class="w-4 h-4 text-red-400"></i> Operativa
+                </button>
+                <button onclick="switchTab('glosario')" id="tab-glosario" class="tab-btn px-3 py-1.5 rounded-xl text-xs font-medium text-slate-400 hover:text-white flex items-center gap-1.5 bg-blue-900/30 border border-blue-500/30">
+                    <i data-lucide="book-open" class="w-4 h-4 text-blue-400"></i> Diccionario Técnico
                 </button>
             </nav>
         </div>
@@ -123,9 +133,14 @@
                         </h2>
                         <p class="text-sm text-slate-400 mt-1">Ingresa los datos de la factura del cliente para realizar la simulación con nuestras tarifas vigentes (0,18 €/kW/día y 0,134 €/kWh).</p>
                     </div>
-                    <span class="bg-slate-800 border border-slate-700 text-slate-300 text-xs px-3 py-1.5 rounded-full flex items-center gap-1.5 font-mono">
-                        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Access 2.0TD (&lt;10kW)
-                    </span>
+                    <div class="flex items-center gap-2">
+                        <button onclick="vaciarCamposCalculadora()" class="px-3.5 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 hover:border-slate-600 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition shadow cursor-pointer">
+                            <i data-lucide="rotate-ccw" class="w-3.5 h-3.5 text-orange-400"></i> Vaciar / Refrescar Campos
+                        </button>
+                        <span class="bg-slate-800 border border-slate-700 text-slate-300 text-xs px-3 py-2 rounded-xl flex items-center gap-1.5 font-mono">
+                            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Access 2.0TD
+                        </span>
+                    </div>
                 </div>
 
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
@@ -302,10 +317,15 @@
                         </div>
 
                         <!-- Banner del Resultado del Ahorro -->
-                        <div id="card-ahorro" class="p-6 rounded-2xl border transition-all duration-300 flex flex-col justify-center items-center text-center space-y-2 glass-card">
+                        <div id="card-ahorro" class="p-6 rounded-2xl border transition-all duration-300 flex flex-col justify-center items-center text-center space-y-3 glass-card">
                             <span class="text-xs uppercase font-bold tracking-widest text-slate-400">Resultado de la Asesoría</span>
                             <div class="text-3xl font-black font-mono" id="txt-diferencia">Ahorro: 4.81 €</div>
                             <p class="text-xs text-slate-300 max-w-md" id="txt-conclusion">Con Repsol el cliente pagará menos en este periodo de facturación.</p>
+
+                            <!-- BOTÓN PARA ABRIR MODAL ASESORÍA Y ARGUMENTARIO -->
+                            <button onclick="abrirModalAsesoria()" class="mt-2 px-5 py-2.5 apple-btn-orange text-white rounded-xl text-xs font-bold tracking-wide flex items-center gap-2 transition cursor-pointer hover:scale-105">
+                                <i data-lucide="sparkles" class="w-4 h-4"></i> Ver Beneficios & Argumentario Comercial
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -780,7 +800,202 @@
             </div>
         </section>
 
+        <!-- ================= SECCIÓN 7: GLOSARIO / DICCIONARIO TÉCNICO ================= -->
+        <section id="sec-glosario" class="hidden space-y-6">
+            <div class="glass-card p-6 lg:p-8 rounded-3xl space-y-6">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-slate-800 pb-5">
+                    <div>
+                        <h2 class="text-2xl font-bold text-white flex items-center gap-2">
+                            <i data-lucide="book-open" class="text-blue-400"></i> Diccionario & Glosario Técnico de Capacitación
+                        </h2>
+                        <p class="text-xs text-slate-400 mt-1">Conceptos técnicos, siglas y terminología clave en orden alfabético para dar la máxima seguridad al asesorar al cliente.</p>
+                    </div>
+                    <div class="relative w-full md:w-64">
+                        <input type="text" id="inp-buscar-glosario" onkeyup="filtrarGlosario()" placeholder="Buscar término o sigla..." 
+                               class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-blue-500">
+                        <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute right-3 top-2.5"></i>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="contenedor-glosario">
+
+                    <!-- A -->
+                    <div class="item-glosario bg-slate-900/80 p-4 rounded-2xl border border-slate-800 space-y-1">
+                        <span class="text-[10px] font-extrabold text-blue-400 bg-blue-500/10 border border-blue-500/30 px-2 py-0.5 rounded font-mono">ACC (Access 2.0TD)</span>
+                        <h4 class="text-sm font-bold text-white">Tarifa Access 2.0TD</h4>
+                        <p class="text-xs text-slate-300">Peaje de acceso estándar regulado para todos los suministros de energía eléctrica en baja tensión con potencias contratadas iguales o inferiores a 10 kW (la gran mayoría de hogares y pequeños negocios).</p>
+                    </div>
+
+                    <div class="item-glosario bg-slate-900/80 p-4 rounded-2xl border border-slate-800 space-y-1">
+                        <span class="text-[10px] font-extrabold text-blue-400 bg-blue-500/10 border border-blue-500/30 px-2 py-0.5 rounded font-mono">ASISTENCIA</span>
+                        <h4 class="text-sm font-bold text-white">Servicio de Asistencia / Mantenimiento</h4>
+                        <p class="text-xs text-slate-300">Servicios complementarios opcionales (Asistente 24h, Confort, Gas, Pymes) que ofrecen urgencias en <3h, reparaciones de electrodomésticos, manitas y revisiones obligatorias de calderas.</p>
+                    </div>
+
+                    <!-- B -->
+                    <div class="item-glosario bg-slate-900/80 p-4 rounded-2xl border border-slate-800 space-y-1">
+                        <span class="text-[10px] font-extrabold text-blue-400 bg-blue-500/10 border border-blue-500/30 px-2 py-0.5 rounded font-mono">BAT VIRTUAL</span>
+                        <h4 class="text-sm font-bold text-white">Batería Virtual</h4>
+                        <p class="text-xs text-slate-300">Sistema digital para clientes con paneles fotovoltaicos que convierte los kWh de excedente solar vertidos a la red en dinero (€) almacenado sin caducidad para compensar facturas de la misma o 2ª vivienda.</p>
+                    </div>
+
+                    <div class="item-glosario bg-slate-900/80 p-4 rounded-2xl border border-slate-800 space-y-1">
+                        <span class="text-[10px] font-extrabold text-red-400 bg-red-500/10 border border-red-500/30 px-2 py-0.5 rounded font-mono">BONO SOCIAL</span>
+                        <h4 class="text-sm font-bold text-white">Bono Social Eléctrico</h4>
+                        <p class="text-xs text-slate-300">Descuento del Gobierno para colectivos vulnerables aplicable únicamente en el Mercado Regulado (PVPC). <strong>RED FLAG:</strong> No debemos cambiar a Repsol a un cliente que tenga el bono social activo ya que lo perdería.</p>
+                    </div>
+
+                    <div class="item-glosario bg-slate-900/80 p-4 rounded-2xl border border-slate-800 space-y-1">
+                        <span class="text-[10px] font-extrabold text-blue-400 bg-blue-500/10 border border-blue-500/30 px-2 py-0.5 rounded font-mono">BRIE</span>
+                        <h4 class="text-sm font-bold text-white">BRIE (Boletín de Reconocimiento de Instalación)</h4>
+                        <p class="text-xs text-slate-300">Documento autonómico exclusivo de Cataluña equivalente al CIE, requerido por la distribuidora para certificar la seguridad de la instalación eléctrica en modificaciones o altas.</p>
+                    </div>
+
+                    <!-- C -->
+                    <div class="item-glosario bg-slate-900/80 p-4 rounded-2xl border border-slate-800 space-y-1">
+                        <span class="text-[10px] font-extrabold text-blue-400 bg-blue-500/10 border border-blue-500/30 px-2 py-0.5 rounded font-mono">CAU</span>
+                        <h4 class="text-sm font-bold text-white">CAU (Centro de Atención al Usuario)</h4>
+                        <p class="text-xs text-slate-300">Servicio de soporte telefónico e incidencias operativas para comerciales. <strong>Importante:</strong> El CAU no realiza búsquedas ni aporta códigos CUPS.</p>
+                    </div>
+
+                    <div class="item-glosario bg-slate-900/80 p-4 rounded-2xl border border-slate-800 space-y-1">
+                        <span class="text-[10px] font-extrabold text-blue-400 bg-blue-500/10 border border-blue-500/30 px-2 py-0.5 rounded font-mono">CIE</span>
+                        <h4 class="text-sm font-bold text-white">CIE (Certificado de Instalación Eléctrica)</h4>
+                        <p class="text-xs text-slate-300">Documento técnico oficial (también conocido como Boletín Eléctrico) emitió por un instalador autorizado. Debe estar en vigor (&lt;20 años) y firmado en todas sus páginas para tramitar altas nuevas de luz.</p>
+                    </div>
+
+                    <div class="item-glosario bg-slate-900/80 p-4 rounded-2xl border border-slate-800 space-y-1">
+                        <span class="text-[10px] font-extrabold text-blue-400 bg-blue-500/10 border border-blue-500/30 px-2 py-0.5 rounded font-mono">CIF</span>
+                        <h4 class="text-sm font-bold text-white">CIF (Código de Identificación Fiscal)</h4>
+                        <p class="text-xs text-slate-300">Identificador fiscal de personas jurídicas y empresas. Para contrataciones con CIF sólo se puede ofrecer el producto específico "Tu Asistente 24h Pymes".</p>
+                    </div>
+
+                    <div class="item-glosario bg-slate-900/80 p-4 rounded-2xl border border-slate-800 space-y-1">
+                        <span class="text-[10px] font-extrabold text-blue-400 bg-blue-500/10 border border-blue-500/30 px-2 py-0.5 rounded font-mono">CUPS</span>
+                        <h4 class="text-sm font-bold text-white">CUPS (Código Universal del Punto de Suministro)</h4>
+                        <p class="text-xs text-slate-300">Clave alfanumérica única de 20 o 22 caracteres (empieza por ES...) que identifica el contador físico de luz o gas. Es el 'DNI' del suministro.</p>
+                    </div>
+
+                    <!-- D -->
+                    <div class="item-glosario bg-slate-900/80 p-4 rounded-2xl border border-slate-800 space-y-1">
+                        <span class="text-[10px] font-extrabold text-blue-400 bg-blue-500/10 border border-blue-500/30 px-2 py-0.5 rounded font-mono">DATADIS</span>
+                        <h4 class="text-sm font-bold text-white">Datadis</h4>
+                        <p class="text-xs text-slate-300">Plataforma digital unificada de las distribuidoras eléctricas en España que permite a los comerciales buscar y obtener el CUPS de luz del cliente mediante la dirección y datos personales.</p>
+                    </div>
+
+                    <div class="item-glosario bg-slate-900/80 p-4 rounded-2xl border border-slate-800 space-y-1">
+                        <span class="text-[10px] font-extrabold text-blue-400 bg-blue-500/10 border border-blue-500/30 px-2 py-0.5 rounded font-mono">DERECHOS</span>
+                        <h4 class="text-sm font-bold text-white">Derechos Regulados (Enganche, Acceso, Extensión)</h4>
+                        <p class="text-xs text-slate-300">Costes fijos fijados por ley que cobra la distribuidora en la 1ª factura cuando se realiza un alta nueva o incremento de potencia (Enganche: 9,04 €/kW, Acceso: 19,70 €/kW, Extensión: 17,37 €/kW + IVA).</p>
+                    </div>
+
+                    <!-- E -->
+                    <div class="item-glosario bg-slate-900/80 p-4 rounded-2xl border border-slate-800 space-y-1">
+                        <span class="text-[10px] font-extrabold text-blue-400 bg-blue-500/10 border border-blue-500/30 px-2 py-0.5 rounded font-mono">ENERGÍA (kWh)</span>
+                        <h4 class="text-sm font-bold text-white">Energía Consumida (Término Variable en kWh)</h4>
+                        <p class="text-xs text-slate-300">La cantidad de electricidad o gas gastada durante el periodo de facturación. En la tarifa Sin Horarios de Repsol se paga a un precio fijo transparente (0,134 €/kWh).</p>
+                    </div>
+
+                    <!-- I -->
+                    <div class="item-glosario bg-slate-900/80 p-4 rounded-2xl border border-slate-800 space-y-1">
+                        <span class="text-[10px] font-extrabold text-blue-400 bg-blue-500/10 border border-blue-500/30 px-2 py-0.5 rounded font-mono">INDEXADA</span>
+                        <h4 class="text-sm font-bold text-white">Tarifa Indexada (Pool)</h4>
+                        <p class="text-xs text-slate-300">Modalidad donde el precio del kWh varía hora a hora según la cotización real del mercado mayorista de energía en lugar de tener un coste fijo anual.</p>
+                    </div>
+
+                    <div class="item-glosario bg-slate-900/80 p-4 rounded-2xl border border-slate-800 space-y-1">
+                        <span class="text-[10px] font-extrabold text-blue-400 bg-blue-500/10 border border-blue-500/30 px-2 py-0.5 rounded font-mono">INFONIF</span>
+                        <h4 class="text-sm font-bold text-white">InfoNIF</h4>
+                        <p class="text-xs text-slate-300">Portal web oficial de verificación de empresas. Si una PyME no tiene tarjeta de CIF física, se aceptan capturas de InfoNIF ('Visión General' y 'Cargos y Vinculaciones') para acreditar la empresa.</p>
+                    </div>
+
+                    <div class="item-glosario bg-slate-900/80 p-4 rounded-2xl border border-slate-800 space-y-1">
+                        <span class="text-[10px] font-extrabold text-blue-400 bg-blue-500/10 border border-blue-500/30 px-2 py-0.5 rounded font-mono">IRG</span>
+                        <h4 class="text-sm font-bold text-white">IRG (Instalación Receptora de Gas)</h4>
+                        <p class="text-xs text-slate-300">Certificado oficial de seguridad para altas de gas natural. No es obligatorio subirlo al portal de ventas, pero el cliente debe tenerlo físicamente para mostrárselo al técnico de la distribuidora.</p>
+                    </div>
+
+                    <!-- J -->
+                    <div class="item-glosario bg-slate-900/80 p-4 rounded-2xl border border-slate-800 space-y-1">
+                        <span class="text-[10px] font-extrabold text-blue-400 bg-blue-500/10 border border-blue-500/30 px-2 py-0.5 rounded font-mono">JUSTO TÍTULO</span>
+                        <h4 class="text-sm font-bold text-white">Justo Título</h4>
+                        <p class="text-xs text-slate-300">Documentación legal que demuestra el derecho de uso sobre una vivienda o local cuando se requiere un cambio de titular (escrituras de propiedad, contrato de alquiler o declaración responsable).</p>
+                    </div>
+
+                    <!-- M -->
+                    <div class="item-glosario bg-slate-900/80 p-4 rounded-2xl border border-slate-800 space-y-1">
+                        <span class="text-[10px] font-extrabold text-blue-400 bg-blue-500/10 border border-blue-500/30 px-2 py-0.5 rounded font-mono">MERCADO LIBRE</span>
+                        <h4 class="text-sm font-bold text-white">Mercado Libre vs. Mercado Regulado</h4>
+                        <p class="text-xs text-slate-300">El Mercado Libre es donde comercializadoras como Repsol ofrecen precios competitivos, descuentos y tarjetas regalo. El Mercado Regulado (PVPC) está sujeto a tarifas fijadas diariamente por el Gobierno.</p>
+                    </div>
+
+                    <div class="item-glosario bg-slate-900/80 p-4 rounded-2xl border border-slate-800 space-y-1">
+                        <span class="text-[10px] font-extrabold text-blue-400 bg-blue-500/10 border border-blue-500/30 px-2 py-0.5 rounded-mono">MYSTORE</span>
+                        <h4 class="text-sm font-bold text-white">MyStore</h4>
+                        <p class="text-xs text-slate-300">Plataforma interna de trabajo de los vendedores de MediaMarkt desde la cual se accede al Banner promocional de Repsol para cargar y vincular la venta al perfil del comercial.</p>
+                    </div>
+
+                    <!-- P -->
+                    <div class="item-glosario bg-slate-900/80 p-4 rounded-2xl border border-slate-800 space-y-1">
+                        <span class="text-[10px] font-extrabold text-blue-400 bg-blue-500/10 border border-blue-500/30 px-2 py-0.5 rounded font-mono">POTENCIA (kW)</span>
+                        <h4 class="text-sm font-bold text-white">Potencia Contratada (Término Fijo en kW)</h4>
+                        <p class="text-xs text-slate-300">La capacidad o 'fuerza' simultánea para conectar aparatos electrónicos a la vez. En la tarifa Repsol se calcula de manera fija a 0,18 €/kW/día. Límite máximo vendible: 10 kW.</p>
+                    </div>
+
+                    <!-- S -->
+                    <div class="item-glosario bg-slate-900/80 p-4 rounded-2xl border border-slate-800 space-y-1">
+                        <span class="text-[10px] font-extrabold text-blue-400 bg-blue-500/10 border border-blue-500/30 px-2 py-0.5 rounded font-mono">SIP</span>
+                        <h4 class="text-sm font-bold text-white">SIP (Sistema de Información de Puntos de Suministro)</h4>
+                        <p class="text-xs text-slate-300">Base de datos unificada del sector del gas natural para que el comercial pueda consultar y extraer el código CUPS de gas de una vivienda mediante la dirección postal.</p>
+                    </div>
+
+                    <!-- V -->
+                    <div class="item-glosario bg-slate-900/80 p-4 rounded-2xl border border-slate-800 space-y-1">
+                        <span class="text-[10px] font-extrabold text-blue-400 bg-blue-500/10 border border-blue-500/30 px-2 py-0.5 rounded font-mono">VPT</span>
+                        <h4 class="text-sm font-bold text-white">VPT (Llamada de Verificación y Calidad)</h4>
+                        <p class="text-xs text-slate-300">Llamada telefónica de calidad realizada de forma interna por Repsol al cliente tras la contratación para reconfirmar su consentimiento y liberar el envío automático de la Tarjeta Regalo MediaMarkt.</p>
+                    </div>
+
+                    <div class="item-glosario bg-slate-900/80 p-4 rounded-2xl border border-slate-800 space-y-1">
+                        <span class="text-[10px] font-extrabold text-blue-400 bg-blue-500/10 border border-blue-500/30 px-2 py-0.5 rounded font-mono">WAYLET</span>
+                        <h4 class="text-sm font-bold text-white">App Waylet</h4>
+                        <p class="text-xs text-slate-300">Aplicación móvil de fidelización y pagos digitales de Repsol que permite ahorrar hasta 0,20 €/litro en gasolina/diésel y hasta un 40% de saldo en recargas eléctricas al contratar la luz o el gas en MediaMarkt.</p>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
     </main>
+
+    <!-- ================= MODAL DE ASESORÍA Y PROPUESTA AL CLIENTE ================= -->
+    <div id="modal-asesoria" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 modal-backdrop animate-fade-in">
+        <div class="glass-card max-w-2xl w-full rounded-3xl p-6 md:p-8 space-y-6 border border-slate-700/80 shadow-2xl relative max-h-[90vh] overflow-y-auto">
+            
+            <!-- Botón Cerrar (X) -->
+            <button onclick="cerrarModalAsesoria()" class="absolute top-5 right-5 w-8 h-8 rounded-full bg-slate-800 border border-slate-700 text-slate-400 hover:text-white flex items-center justify-center transition cursor-pointer">
+                <i data-lucide="x" class="w-4 h-4"></i>
+            </button>
+
+            <!-- Encabezado Modal -->
+            <div id="modal-header-container" class="space-y-2 border-b border-slate-800 pb-4">
+                <!-- Se llena dinámicamente según si hay ahorro o sobrecoste -->
+            </div>
+
+            <!-- Cuerpo de Beneficios y Argumentario -->
+            <div id="modal-body-container" class="space-y-4">
+                <!-- Se llena dinámicamente -->
+            </div>
+
+            <!-- Pie Modal -->
+            <div class="pt-4 border-t border-slate-800 flex flex-col sm:flex-row justify-between items-center gap-3">
+                <span class="text-[11px] text-slate-400 italic">Propuesta Oficial Repsol Energy & MediaMarkt 2026</span>
+                <button onclick="cerrarModalAsesoria()" class="w-full sm:w-auto px-6 py-2.5 apple-btn-orange text-white rounded-xl text-xs font-bold transition cursor-pointer">
+                    Cerrar y Continuar en Calculadora
+                </button>
+            </div>
+        </div>
+    </div>
 
     <footer class="border-t border-slate-800/80 py-4 px-6 text-center text-xs text-slate-500 bg-slate-950/50">
         <p>Plataforma Interna de Capacitación & Asesoría Comercial — Repsol Energy & MediaMarkt 2026</p>
@@ -793,6 +1008,12 @@
         // Variables de estado para los Modos de Tramos
         let esModoTramosPotencia = false;
         let esModoTramosConsumo = false;
+
+        // Guardar globalmente datos de la simulación
+        let ultimoAhorro = 0;
+        let ultimoPorcentajeAhorro = 0;
+        let ultimoTotalCliente = 0;
+        let ultimoTotalRepsol = 0;
 
         // Alternar modo de potencia
         function toggleModoPotencia() {
@@ -836,6 +1057,32 @@
             lucide.createIcons();
         }
 
+        // VACIAR COMPLETAMENTE TODOS LOS CAMPOS DE LA CALCULADORA
+        function vaciarCamposCalculadora() {
+            // Vaciar inputs principales
+            document.getElementById('inp-potencia').value = '';
+            document.getElementById('inp-consumo').value = '';
+            document.getElementById('inp-dias').value = '';
+            document.getElementById('inp-otros').value = '';
+            document.getElementById('inp-varios').value = '';
+            document.getElementById('inp-impuesto').value = '';
+            document.getElementById('inp-total-cliente').value = '';
+
+            // Vaciar inputs por tramos
+            document.getElementById('inp-potencia-p1').value = '';
+            document.getElementById('inp-potencia-p2').value = '';
+            document.getElementById('inp-consumo-p1').value = '';
+            document.getElementById('inp-consumo-p2').value = '';
+            document.getElementById('inp-consumo-p3').value = '';
+
+            // Volver a modo simple si estaba en tramos
+            if (esModoTramosPotencia) toggleModoPotencia();
+            if (esModoTramosConsumo) toggleModoConsumo();
+
+            // Recalcular con valores vacíos (0s)
+            calcular();
+        }
+
         // Cálculo cuando se introducen tramos de Potencia
         function calcularTramosPotencia() {
             const p1 = parseFloat(document.getElementById('inp-potencia-p1').value) || 0;
@@ -853,9 +1100,24 @@
             calcular();
         }
 
+        // Filtrado en el Glosario / Diccionario Técnico
+        function filtrarGlosario() {
+            const query = document.getElementById('inp-buscar-glosario').value.toLowerCase();
+            const items = document.querySelectorAll('.item-glosario');
+
+            items.forEach(item => {
+                const text = item.textContent.toLowerCase();
+                if (text.includes(query)) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
         // Cambio de Pestañas
         function switchTab(tabId) {
-            const tabs = ['calc', 'tarifas', 'waylet', 'asistencias', 'requisitos', 'proceso'];
+            const tabs = ['calc', 'tarifas', 'waylet', 'asistencias', 'requisitos', 'proceso', 'glosario'];
             tabs.forEach(id => {
                 const sec = document.getElementById(`sec-${id}`);
                 const btn = document.getElementById(`tab-${id}`);
@@ -883,23 +1145,20 @@
             const totalCliente = parseFloat(document.getElementById('inp-total-cliente').value) || 0;
 
             // Fórmulas oficiales Repsol Access 2.0TD:
-            // Potencia: 0.18 * potencia * días
             const potenciaRepsol = 0.18 * potencia * dias;
-
-            // Consumo: consumo * 0.134
             const consumoRepsol = consumo * 0.134;
-
-            // Subtotal Base
             const subtotal = potenciaRepsol + consumoRepsol + otros + varios;
-
-            // Impuesto
             const impuestos = subtotal * (impuestoPct / 100);
-
-            // Total Repsol: (Potencia + Consumo + Otros + Varios) * (1 + Impuesto/100)
             const totalRepsol = subtotal + impuestos;
 
-            // Diferencia
             const ahorro = totalCliente - totalRepsol;
+            const pctAhorro = totalCliente > 0 ? ((ahorro / totalCliente) * 100).toFixed(1) : 0;
+
+            // Almacenar globales
+            ultimoAhorro = ahorro;
+            ultimoPorcentajeAhorro = pctAhorro;
+            ultimoTotalCliente = totalCliente;
+            ultimoTotalRepsol = totalRepsol;
 
             // Renderizar resultados en DOM
             document.getElementById('res-potencia').textContent = potenciaRepsol.toFixed(2) + ' €';
@@ -916,23 +1175,128 @@
             const txtDiferencia = document.getElementById('txt-diferencia');
             const txtConclusion = document.getElementById('txt-conclusion');
 
-            if (ahorro > 0) {
-                cardAhorro.className = "p-6 rounded-2xl border transition-all duration-300 flex flex-col justify-center items-center text-center space-y-2 bg-emerald-500/10 border-emerald-500/40 shadow-lg shadow-emerald-500/10";
+            if (totalCliente === 0 && totalRepsol === 0) {
+                cardAhorro.className = "p-6 rounded-2xl border transition-all duration-300 flex flex-col justify-center items-center text-center space-y-3 glass-card";
+                txtDiferencia.className = "text-3xl font-black font-mono text-slate-400";
+                txtDiferencia.textContent = `0.00 €`;
+                txtConclusion.textContent = `Ingresa los datos de la factura para iniciar la simulación.`;
+            } else if (ahorro > 0) {
+                cardAhorro.className = "p-6 rounded-2xl border transition-all duration-300 flex flex-col justify-center items-center text-center space-y-3 bg-emerald-500/10 border-emerald-500/40 shadow-lg shadow-emerald-500/10";
                 txtDiferencia.className = "text-3xl font-black font-mono text-emerald-400";
-                txtDiferencia.textContent = `¡Ahorro de ${ahorro.toFixed(2)} €!`;
-                txtConclusion.textContent = `Con Repsol el cliente se ahorra un ${((ahorro / totalCliente) * 100).toFixed(1)}% respecto a su factura actual.`;
+                txtDiferencia.textContent = `¡Ahorro directo de ${ahorro.toFixed(2)} €!`;
+                txtConclusion.textContent = `Con Repsol el cliente se ahorra un ${pctAhorro}% respecto a su factura actual.`;
             } else if (ahorro < 0) {
                 const sobrecoste = Math.abs(ahorro);
-                cardAhorro.className = "p-6 rounded-2xl border transition-all duration-300 flex flex-col justify-center items-center text-center space-y-2 bg-amber-500/10 border-amber-500/40";
+                cardAhorro.className = "p-6 rounded-2xl border transition-all duration-300 flex flex-col justify-center items-center text-center space-y-3 bg-amber-500/10 border-amber-500/40";
                 txtDiferencia.className = "text-3xl font-black font-mono text-amber-400";
-                txtDiferencia.textContent = `Diferencia: +${sobrecoste.toFixed(2)} €`;
-                txtConclusion.textContent = `Se recomienda enfatizar el saldo accumulable en Waylet o las tarjetas regalo MediaMarkt para equilibrar la propuesta.`;
+                txtDiferencia.textContent = `Diferencia de Tarifa: +${sobrecoste.toFixed(2)} €`;
+                txtConclusion.textContent = `Repsol compensa ampliamente esta pequeña diferencia mediante la Tarjeta Regalo MediaMarkt y saldo Waylet.`;
             } else {
-                cardAhorro.className = "p-6 rounded-2xl border transition-all duration-300 flex flex-col justify-center items-center text-center space-y-2 glass-card";
+                cardAhorro.className = "p-6 rounded-2xl border transition-all duration-300 flex flex-col justify-center items-center text-center space-y-3 glass-card";
                 txtDiferencia.className = "text-3xl font-black font-mono text-slate-200";
                 txtDiferencia.textContent = `Mismo Importe: 0.00 €`;
-                txtConclusion.textContent = `Los costes de la tarifa base son equivalentes.`;
+                txtConclusion.textContent = `Los costes de la tarifa base son equivalentes. Se gana mediante regalos e incentivos Waylet.`;
             }
+        }
+
+        // Lógica de Modales y Argumentario Comercial Reforzado con datos oficiales de la Presentación 2026
+        function abrirModalAsesoria() {
+            const headerContainer = document.getElementById('modal-header-container');
+            const bodyContainer = document.getElementById('modal-body-container');
+            const modal = document.getElementById('modal-asesoria');
+
+            if (ultimoAhorro > 0) {
+                // CASO AHORRO POSITIVO
+                headerContainer.innerHTML = `
+                    <div class="inline-flex items-center gap-2 bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 text-xs px-3 py-1 rounded-full font-bold">
+                        <i data-lucide="party-popper" class="w-4 h-4"></i> ¡Propuesta Comercial Ganadora!
+                    </div>
+                    <h3 class="text-2xl font-black text-white">¡Enhorabuena! Ahorro directo e inmediato en su factura</h3>
+                    <p class="text-sm text-emerald-400 font-medium">
+                        Cambiándose hoy a Repsol pagará <strong class="text-white text-lg font-mono">${ultimoAhorro.toFixed(2)} € MENOS</strong> en esta factura (un <span class="underline font-bold">${ultimoPorcentajeAhorro}% de ahorro directo</span>).
+                    </p>
+                `;
+
+                bodyContainer.innerHTML = `
+                    <p class="text-xs text-slate-300">Además del ahorro directo mes a mes, al realizar la contratación presencial hoy en MediaMarkt se beneficia de la <strong>Estrategia de Valor Repsol 2026</strong>:</p>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                        <div class="bg-slate-900/80 p-3.5 rounded-2xl border border-slate-800 space-y-1">
+                            <span class="text-emerald-400 font-bold flex items-center gap-1.5"><i data-lucide="gift" class="w-4 h-4"></i> Tarjeta Regalo MediaMarkt</span>
+                            <p class="text-slate-400 text-[11px]">Consigue de <strong>50 € a 150 € inmediatos</strong> (enviados por SMS/Email) para gastar hoy mismo en cualquier producto de la tienda.</p>
+                        </div>
+
+                        <div class="bg-slate-900/80 p-3.5 rounded-2xl border border-slate-800 space-y-1">
+                            <span class="text-orange-400 font-bold flex items-center gap-1.5"><i data-lucide="lock" class="w-4 h-4"></i> Blindaje de Precio por 12 Meses</span>
+                            <p class="text-slate-400 text-[11px]">Mismo precio por kWh las 24 horas (0,134 €/kWh). Cero tramos complicados, cero sorpresas al encender electrodomésticos.</p>
+                        </div>
+
+                        <div class="bg-slate-900/80 p-3.5 rounded-2xl border border-slate-800 space-y-1">
+                            <span class="text-cyan-400 font-bold flex items-center gap-1.5"><i data-lucide="fuel" class="w-4 h-4"></i> Descuento Diálogo Waylet</span>
+                            <p class="text-slate-400 text-[11px]">Acumula hasta <strong>0,20 €/litro de ahorro</strong> al repostar en estaciones Repsol y hasta 40% en recargas eléctricas.</p>
+                        </div>
+
+                        <div class="bg-slate-900/80 p-3.5 rounded-2xl border border-slate-800 space-y-1">
+                            <span class="text-purple-400 font-bold flex items-center gap-1.5"><i data-lucide="shield-check" class="w-4 h-4"></i> ¡2 Meses GRATIS de Asistencia!</span>
+                            <p class="text-slate-400 text-[11px]">Servicio de urgencias &lt;3h, manitas en el hogar y reparación de electrodomésticos sin coste durante 60 días.</p>
+                        </div>
+                    </div>
+                `;
+            } else {
+                // CASO SOBRECOSTE O DIFERENCIA EN TÉRMINO PURO
+                const sobrecoste = Math.abs(ultimoAhorro).toFixed(2);
+                headerContainer.innerHTML = `
+                    <div class="inline-flex items-center gap-2 bg-amber-500/20 border border-amber-500/40 text-amber-400 text-xs px-3 py-1 rounded-full font-bold">
+                        <i data-lucide="lightbulb" class="w-4 h-4"></i> Propuesta de Valor Agregado & Balance Positivo
+                    </div>
+                    <h3 class="text-2xl font-black text-white">Por qué Repsol le conviene a usted como cliente (Balance Global)</h3>
+                    <p class="text-sm text-slate-300">
+                        La tarifa base refleja una diferencia técnica mínima de solo <strong class="text-amber-400 font-mono text-base">+${sobrecoste} €</strong> en esta factura.
+                    </p>
+                `;
+
+                bodyContainer.innerHTML = `
+                    <div class="bg-slate-900/90 p-3.5 rounded-2xl border border-amber-500/30 text-xs space-y-1">
+                        <h4 class="font-bold text-amber-400 text-sm flex items-center gap-1.5"><i data-lucide="check-circle" class="w-4 h-4"></i> Beneficios para nuestros clientes:</h4>
+                        <p class="text-slate-300 leading-relaxed">
+                            Señor cliente, los siguientes beneficios monetarios le acompañaran durante su contratación:
+                        </p>
+                    </div>
+
+                    <div class="space-y-2.5 text-xs">
+                        <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800 flex items-start gap-3">
+                            <div class="w-7 h-7 rounded-lg apple-btn-orange text-white flex items-center justify-center font-bold text-xs flex-shrink-0">1</div>
+                            <div>
+                                <strong class="text-white block">Incentivo Inmediato en Tienda (50€ a 150€):</strong>
+                                <span class="text-slate-400">Recibe una Tarjeta Regalo al instante. Un regalo que cubre de golpe la diferencia de su factura.</span>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800 flex items-start gap-3">
+                            <div class="w-7 h-7 rounded-lg apple-btn-orange text-white flex items-center justify-center font-bold text-xs flex-shrink-0">2</div>
+                            <div>
+                                <strong class="text-white block">Ahorro Mensual en Gasolinera con App Waylet:</strong>
+                                <span class="text-slate-400">Repostando tan solo un depósito al mes (50 litros), acumula de **5 € a 10 € de saldo mensual**, dejando el balance financiero total en claro **beneficio para su bolsillo**.</span>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800 flex items-start gap-3">
+                            <div class="w-7 h-7 rounded-lg apple-btn-orange text-white flex items-center justify-center font-bold text-xs flex-shrink-0">3</div>
+                            <div>
+                                <strong class="text-white block">Tranquilidad de Precio Fijo Blindado 12 Meses:</strong>
+                                <span class="text-slate-400">Evita las subidas inesperadas del mercado eléctrico regulado u otras compañías con revisiones trimestrales.</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            modal.classList.remove('hidden');
+            lucide.createIcons();
+        }
+
+        function cerrarModalAsesoria() {
+            document.getElementById('modal-asesoria').classList.add('hidden');
         }
 
         // Ejecutar cálculo inicial al cargar
